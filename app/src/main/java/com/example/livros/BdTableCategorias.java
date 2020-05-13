@@ -11,7 +11,7 @@ public class BdTableCategorias implements BaseColumns {
 
     public void cria() {
         db.execSQL("CREATE TABLE categorias (" +
-                _ID + "INTEGER PRIMARY KEY AUTOINCREMENT," +
+                _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "descricao TEXT NOT NULL" +
                 ")");
     }

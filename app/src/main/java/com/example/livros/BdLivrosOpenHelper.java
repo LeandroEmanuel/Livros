@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class BdLivrosOpenHelper extends SQLiteOpenHelper {
-    private static final String NOME_BASEDE_DADOS = "livros.db";
+    public static final String NOME_BASEDE_DADOS = "livros.db";
     private static final int VERSAO_BASE_DADOS = 1;
 
     /**
@@ -22,7 +22,7 @@ public class BdLivrosOpenHelper extends SQLiteOpenHelper {
      *                {@link #onUpgrade} will be used to upgrade the database; if the database is
      *                newer, {@link #onDowngrade} will be used to downgrade the database
      */
-    public BdLivrosOpenHelper(@Nullable Context context, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    public BdLivrosOpenHelper(@Nullable Context context) {
         super(context, NOME_BASEDE_DADOS, null, VERSAO_BASE_DADOS);
     }
 
