@@ -24,5 +24,21 @@
         <action
             android:id="@+id/action_adicionar_livro_to_lista_livros"
             app:destination="@id/ListaLivrosFragment" />
+        <action
+            android:id="@+id/action_AdicionarLivrosFragment_to_alteraLivroFragment"
+            app:destination="@id/alteraLivroFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/alteraLivroFragment"
+        android:name="com.example.livros.alteraLivroFragment"
+        android:label="fragment_altera_livro"
+        tools:layout="@layout/fragment_altera_livro" >
+        <action
+            android:id="@+id/action_alteraLivroFragment_to_AdicionarLivrosFragment"
+            app:destination="@id/AdicionarLivrosFragment" />
+        <argument
+            android:name="idLivro"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 </navigation>
