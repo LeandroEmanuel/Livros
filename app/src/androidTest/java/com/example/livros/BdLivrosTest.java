@@ -1,6 +1,7 @@
 package com.example.livros;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -40,5 +41,92 @@ public class BdLivrosTest {
         return InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
+    @Test
+    public void consegueInserirCategorias(){
+        Context appContext = getTargetContext();
+
+        BdLivrosOpenHelper openHelper = new BdLivrosOpenHelper(appContext);
+        SQLiteDatabase bdLivros = openHelper.getWritableDatabase();// abrir a bd para escrita
+
+        BdTableCategorias tableCategorias = new BdTableCategorias(bdLivros);
+
+        Categoria categoria = new Categoria();
+        categoria.setDescricao("Ação");
+
+        long id = tableCategorias.insert(Convert.categoriaToContentValues(categoria));
+        assertNotEquals(-1,id);
+
+        bdLivros.close();
+    }
+    @Test
+    public void consegueLerCategorias(){
+        Context appContext = getTargetContext();
+
+        BdLivrosOpenHelper openHelper = new BdLivrosOpenHelper(appContext);
+        SQLiteDatabase bdLivros = openHelper.getWritableDatabase();// abrir a bd para escrita
+
+        BdTableCategorias tableCategorias = new BdTableCategorias(bdLivros);
+        Cursor cursor = tableCategorias.query(BdTableCategorias.TODOS_CAMPOS,null,
+                null,null,null,null);
+        int registos = cursor.getCount();
+
+        Categoria categoria = new Categoria();
+        categoria.setDescricao("Sci-fi");
+
+        long id = tableCategorias.insert(Convert.categoriaToContentValues(categoria));
+        assertNotEquals(-1, id);
+
+        cursor = tableCategorias.query(BdTableCategorias.TODOS_CAMPOS,null,
+                null,null,null,null);
+        assertEquals(registos + 1, cursor.getCount());
+        cursor.close();
+
+        bdLivros.close();
+    }
+    @Test
+    public void consegueAlterarCategorias(){
+        Context appContext = getTargetContext();
+
+        BdLivrosOpenHelper openHelper = new BdLivrosOpenHelper(appContext);
+        SQLiteDatabase bdLivros = openHelper.getWritableDatabase();
+        // abrir a bd para escrita
+
+        BdTableCategorias tableCategorias = new BdTableCategorias(bdLivros);
+
+        Categoria categoria = new Categoria();
+        categoria.setDescricao("Romenc");
+
+        long id =tableCategorias.insert(Convert.categoriaToContentValues(categoria));
+        assertNotEquals(-1,id);
+
+        categoria.setDescricao("Romance");
+        int registosAlterados = tableCategorias.update(
+                Convert.categoriaToContentValues(categoria),BdTableCategorias._ID+"=?", new String[]{String.valueOf(id)});
+        assertEquals(1, registosAlterados);
+
+        bdLivros.close();
+    }
+    @Test
+    public void consegueApagarCategorias(){
+        Context appContext = getTargetContext();
+
+        BdLivrosOpenHelper openHelper = new BdLivrosOpenHelper(appContext);
+        SQLiteDatabase bdLivros = openHelper.getWritableDatabase();
+        // abrir a bd para escrita
+
+        BdTableCategorias tableCategorias = new BdTableCategorias(bdLivros);
+
+        Categoria categoria = new Categoria();
+        categoria.setDescricao("TESTE");
+
+        long id =tableCategorias.insert(Convert.categoriaToContentValues(categoria));
+        assertNotEquals(-1,id);
+
+        int registosApagados = tableCategorias.delete(BdTableCategorias._ID+"=?", new String[]{String.valueOf(id)});
+        assertEquals(1, registosApagados);
+
+
+        bdLivros.close();
+    }
 
 }
