@@ -23,7 +23,7 @@ public class ListaLivrosFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.buttonNovo).setOnClickListener(new View.OnClickListener() {
+        /*view.findViewById(R.id.buttonNovo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 novoLivro();
@@ -35,7 +35,7 @@ public class ListaLivrosFragment extends Fragment {
             public void onClick(View v) {
                 alteraLivro();
             }
-        });
+        });*/
     }
 
     private void alteraLivro() {

@@ -40,6 +40,34 @@ public class BdLivrosTest {
     private Context getTargetContext() {
         return InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
+    private long insereCategoria(BdTableCategorias tableCategorias, Categoria categoria) {
+        long idCategoria = tableCategorias.insert(Convert.categoriaToContentValues(categoria));
+        assertNotEquals(-1,idCategoria);
+
+        return idCategoria;
+    }
+    private long insereCategoria(BdTableCategorias tableCategorias, String descricao) {
+        Categoria categoria = new Categoria();
+        categoria.setDescricao(descricao);
+
+        return insereCategoria(tableCategorias,categoria);
+    }
+    private long insereLivro(SQLiteDatabase bdLivros, String titulo, String descCategoria){
+        BdTableCategorias tableCategorias = new BdTableCategorias(bdLivros);
+
+        long idCategoria = insereCategoria(tableCategorias,descCategoria);
+
+        BdTableLivros tabelaLivros = new BdTableLivros(bdLivros);
+
+        Livro livro = new Livro();
+        livro.setTitulo(titulo);
+        livro.setIdCategoria(idCategoria);
+
+        long idLivro = tabelaLivros.insert(Convert.livroToContentValues(livro));
+        assertNotEquals(-1,idLivro);
+
+        return idLivro;
+    }
 
     @Test
     public void consegueInserirCategorias(){
@@ -50,14 +78,11 @@ public class BdLivrosTest {
 
         BdTableCategorias tableCategorias = new BdTableCategorias(bdLivros);
 
-        Categoria categoria = new Categoria();
-        categoria.setDescricao("Ação");
-
-        long id = tableCategorias.insert(Convert.categoriaToContentValues(categoria));
-        assertNotEquals(-1,id);
+        insereCategoria(tableCategorias, "Ação");
 
         bdLivros.close();
     }
+
     @Test
     public void consegueLerCategorias(){
         Context appContext = getTargetContext();
@@ -69,12 +94,8 @@ public class BdLivrosTest {
         Cursor cursor = tableCategorias.query(BdTableCategorias.TODOS_CAMPOS,null,
                 null,null,null,null);
         int registos = cursor.getCount();
-
-        Categoria categoria = new Categoria();
-        categoria.setDescricao("Sci-fi");
-
-        long id = tableCategorias.insert(Convert.categoriaToContentValues(categoria));
-        assertNotEquals(-1, id);
+        cursor.close();
+        insereCategoria(tableCategorias,"Sci-fi");
 
         cursor = tableCategorias.query(BdTableCategorias.TODOS_CAMPOS,null,
                 null,null,null,null);
@@ -93,11 +114,10 @@ public class BdLivrosTest {
 
         BdTableCategorias tableCategorias = new BdTableCategorias(bdLivros);
 
+
         Categoria categoria = new Categoria();
         categoria.setDescricao("Romenc");
-
-        long id =tableCategorias.insert(Convert.categoriaToContentValues(categoria));
-        assertNotEquals(-1,id);
+        long id = insereCategoria(tableCategorias,categoria);
 
         categoria.setDescricao("Romance");
         int registosAlterados = tableCategorias.update(
@@ -116,15 +136,43 @@ public class BdLivrosTest {
 
         BdTableCategorias tableCategorias = new BdTableCategorias(bdLivros);
 
-        Categoria categoria = new Categoria();
-        categoria.setDescricao("TESTE");
-
-        long id =tableCategorias.insert(Convert.categoriaToContentValues(categoria));
-        assertNotEquals(-1,id);
+        long id = insereCategoria(tableCategorias,"TESTE");
 
         int registosApagados = tableCategorias.delete(BdTableCategorias._ID+"=?", new String[]{String.valueOf(id)});
         assertEquals(1, registosApagados);
 
+
+        bdLivros.close();
+    }
+    @Test
+    public void consegueInserirLivros(){
+        Context appContext = getTargetContext();
+
+        BdLivrosOpenHelper openHelper = new BdLivrosOpenHelper(appContext);
+        SQLiteDatabase bdLivros = openHelper.getWritableDatabase();// abrir a bd para escrita
+
+        insereLivro(bdLivros,"O Intruso", "Terror");
+
+        bdLivros.close();
+    }
+
+    @Test
+    public void consegueLerLivros(){
+        Context appContext = getTargetContext();
+
+        BdLivrosOpenHelper openHelper = new BdLivrosOpenHelper(appContext);
+        SQLiteDatabase bdLivros = openHelper.getWritableDatabase();// abrir a bd para escrita
+
+        BdTableLivros tableLivros = new BdTableLivros(bdLivros);
+        Cursor cursor = tableLivros.query(BdTableLivros.TODOS_CAMPOS, null, null, null, null, null);
+        int registos = cursor.getCount();
+        cursor.close();
+
+        insereLivro(bdLivros,"O Intruso II", "Terror/Ação");
+
+        cursor = tableLivros.query(BdTableLivros.TODOS_CAMPOS, null, null, null, null, null);
+        assertEquals(registos + 1, cursor.getCount());
+        cursor.close();
 
         bdLivros.close();
     }
