@@ -177,4 +177,48 @@ public class BdLivrosTest {
         bdLivros.close();
     }
 
+    @Test
+    public void consegueAlterarLivros(){
+        Context appContext = getTargetContext();
+
+        BdLivrosOpenHelper openHelper = new BdLivrosOpenHelper(appContext);
+        SQLiteDatabase bdLivros = openHelper.getWritableDatabase();// abrir a bd para escrita
+
+        long idLivro = insereLivro(bdLivros,"O silêncio dos inoceentes", "Thriller");
+
+        BdTableLivros tabelaLivros = new BdTableLivros(bdLivros);
+
+        Cursor cursor = tabelaLivros.query(BdTableLivros.TODOS_CAMPOS, BdTableLivros._ID +"=?",
+                new String[]{String.valueOf(idLivro)},null, null, null);
+        assertEquals(1, cursor.getCount());
+
+        assertTrue(cursor.moveToNext());
+        Livro livro = Convert.cursorToLivro(cursor);
+        cursor.close();
+
+        assertEquals("O silêncio dos inocentes", livro.getTitulo());
+
+        livro.setTitulo("O mistério do quarto secreto");
+        int registosAfetados = tabelaLivros.update(Convert.livroToContentValues(livro),BdTableLivros._ID + "=?", new String[]{String.valueOf(livro.getId())});
+
+        bdLivros.close();
+    }
+
+    @Test
+    public void  consegueEliminarLivros(){
+        Context appContext = getTargetContext();
+        BdLivrosOpenHelper openHelper = new BdLivrosOpenHelper(appContext);
+        SQLiteDatabase bdLivros = openHelper.getWritableDatabase();
+
+        long id = insereLivro(bdLivros, "O silêncio dos inocentes", "Thriller");
+
+        BdTableLivros tabelaLivros = new BdTableLivros(bdLivros);
+        int registosEliminados = tabelaLivros.delete(BdTableLivros._ID+"=?", new String[]{String.valueOf(id)});
+        assertEquals(1,registosEliminados);
+
+        bdLivros.close();
+    }
+
+
+
 }

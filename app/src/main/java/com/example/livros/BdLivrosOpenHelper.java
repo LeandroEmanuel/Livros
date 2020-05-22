@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 public class BdLivrosOpenHelper extends SQLiteOpenHelper {
     public static final String NOME_BASEDE_DADOS = "livros.db";
     private static final int VERSAO_BASE_DADOS = 1;
+    private static boolean DESENVOLVIMENTO = true;
 
     /**
      * Create a helper object to create, open, and/or manage a database.
@@ -38,6 +39,52 @@ public class BdLivrosOpenHelper extends SQLiteOpenHelper {
         tabelasCategorisa.cria();
         BdTableLivros tabelaLivros = new BdTableLivros(db);
         tabelaLivros.cria();
+        if(DESENVOLVIMENTO){
+            seedData(db);
+        }
+    }
+
+    private void seedData(SQLiteDatabase db) {
+        BdTableCategorias tabelasCategorisa = new BdTableCategorias(db);
+
+        Categoria categoria = new Categoria();
+        categoria.setDescricao("Ação");
+        long idCatAcao = tabelasCategorisa.insert(Convert.categoriaToContentValues(categoria));
+
+        categoria = new Categoria();
+        categoria.setDescricao("Terror");
+        long idCatTerror = tabelasCategorisa.insert(Convert.categoriaToContentValues(categoria));
+
+        categoria = new Categoria();
+        categoria.setDescricao("Mistério");
+        long idCatMisterio = tabelasCategorisa.insert(Convert.categoriaToContentValues(categoria));
+
+        categoria = new Categoria();
+        categoria.setDescricao("Sci-fi");
+       tabelasCategorisa.insert(Convert.categoriaToContentValues(categoria));
+
+
+        BdTableLivros tabelaLivros = new BdTableLivros(db);
+
+        Livro livro = new Livro();
+        livro.setTitulo("Lua vermelha");
+        livro.setIdCategoria(idCatAcao);
+        tabelaLivros.insert(Convert.livroToContentValues(livro));
+
+        livro = new Livro();
+        livro.setTitulo("O sobrevivente");
+        livro.setIdCategoria(idCatAcao);
+        tabelaLivros.insert(Convert.livroToContentValues(livro));
+
+        livro = new Livro();
+        livro.setTitulo("O intruso");
+        livro.setIdCategoria(idCatTerror);
+        tabelaLivros.insert(Convert.livroToContentValues(livro));
+
+        livro = new Livro();
+        livro.setTitulo("O mistério do quarto secreto");
+        livro.setIdCategoria(idCatMisterio);
+        tabelaLivros.insert(Convert.livroToContentValues(livro));
     }
 
     /**
