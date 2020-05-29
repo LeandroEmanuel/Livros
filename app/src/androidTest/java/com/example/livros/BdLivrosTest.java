@@ -196,7 +196,7 @@ public class BdLivrosTest {
         Livro livro = Convert.cursorToLivro(cursor);
         cursor.close();
 
-        assertEquals("O silêncio dos inocentes", livro.getTitulo());
+        assertEquals("O silêncio dos inoceentes", livro.getTitulo());
 
         livro.setTitulo("O mistério do quarto secreto");
         int registosAfetados = tabelaLivros.update(Convert.livroToContentValues(livro), BdTableLivros._ID + "=?", new String[]{String.valueOf(livro.getId())});
