@@ -2,6 +2,7 @@ package com.example.livros;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +32,15 @@ public class ListaLivrosFragment extends Fragment {
         Context context = getContext();
         RecyclerView recyclerViewLivros = (RecyclerView) view.findViewById(R.id.recycleViewLivros);
         AdaptadorLivros adaptadorLivros = new AdaptadorLivros(context);
-
         recyclerViewLivros.setAdapter(adaptadorLivros);
         recyclerViewLivros.setLayoutManager(new LinearLayoutManager(context));
 
-        Cursor cursor = null;
+        // todo: este codigo é obsuleto e tem que ser substituido
+        BdLivrosOpenHelper openHelper = new BdLivrosOpenHelper(context);
+        SQLiteDatabase bdLivros = openHelper.getReadableDatabase();// abrir a bd para escrita
+        BdTableLivros tableLivros = new BdTableLivros(bdLivros);
+        Cursor cursor = tableLivros.query(BdTableLivros.TODOS_CAMPOS, null, null, null, null, null);
+        getActivity().startManagingCursor(cursor);
         adaptadorLivros.setCursor(cursor);
 
 
