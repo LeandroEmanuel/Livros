@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Build;
@@ -134,7 +135,28 @@ public class LivrosContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        SQLiteDatabase bd = openHelper.getReadableDatabase();
+
+        //content://com.exemple/livros/3
+
+        String id = uri.getLastPathSegment();// para apanhar o id do livro ou o id da categoria
+
+        switch(getUriMAcher().match(uri)){
+            case URI_CATEGORIAS:
+                return new BdTableCategorias(bd).query(projection, selection, selectionArgs, null, null,sortOrder);
+
+            case URI_ID_CATEGORIA:
+                return new BdTableCategorias(bd).query(projection, BdTableCategorias._ID + "=?", new String[]{id}, null, null,sortOrder);
+
+            case URI_LIVROS:
+                return new BdTableLivros(bd).query(projection, selection, selectionArgs, null, null,sortOrder);
+
+            case URI_ID_LIVRO:
+                return new BdTableLivros(bd).query(projection, BdTableLivros._ID + "=?", new String[]{id}, null, null,sortOrder);
+
+            default:
+                throw new UnsupportedOperationException("Uri inválida (QUERY): " + uri.getPath());//erro para quando o enderesso não é valido
+        }
     }
 
     /**
