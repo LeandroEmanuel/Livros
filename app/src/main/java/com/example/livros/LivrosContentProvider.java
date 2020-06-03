@@ -57,7 +57,7 @@ public class LivrosContentProvider extends ContentProvider {
     public boolean onCreate() {
         openHelper = new BdLivrosOpenHelper(getContext());
         
-        return false;
+        return true;
     }
 
     /**
