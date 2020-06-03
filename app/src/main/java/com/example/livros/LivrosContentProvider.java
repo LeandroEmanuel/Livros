@@ -156,7 +156,7 @@ public class LivrosContentProvider extends ContentProvider {
                 return new BdTableLivros(bd).query(projection, BdTableLivros._ID + "=?", new String[]{id}, null, null,sortOrder);
 
             default:
-                throw new UnsupportedOperationException("Uri inválida (QUERY): " + uri.getPath());//erro para quando o enderesso não é valido
+                throw new UnsupportedOperationException("Enderesso de query inválido (QUERY): " + uri.getPath());//erro para quando o enderesso não é valido
         }
     }
 
@@ -228,7 +228,7 @@ public class LivrosContentProvider extends ContentProvider {
                 break;
 
             default:
-                throw new UnsupportedOperationException("Uri inválida (INSERT): " + uri.getPath());//erro para quando o enderesso não é valido
+                throw new UnsupportedOperationException("Enderesso de insert inválido (INSERT): " + uri.getPath());//erro para quando o enderesso não é valido
         }
         if (id == -1) {
             throw new SQLException("Não foi possivel inserir o registo" + uri.getPath());
@@ -265,17 +265,15 @@ public class LivrosContentProvider extends ContentProvider {
 
         String id = uri.getLastPathSegment();
 
-        int registosEliminados;
-
         switch(getUriMAcher().match(uri)) {
             case URI_ID_CATEGORIA:
                 return new BdTableCategorias(bd).delete(BdTableCategorias._ID + "=?", new String[]{id});
 
             case URI_ID_LIVRO:
                 return new BdTableCategorias(bd).delete(BdTableCategorias._ID + "=?", new String[]{id});
-                
+
             default:
-                throw new UnsupportedOperationException("Uri inválida (INSERT): " + uri.getPath());//erro para quando o enderesso não é valido
+                throw new UnsupportedOperationException("Enderesso de delete inválido (DELETE): " + uri.getPath());//erro para quando o enderesso não é valido
         }
 
     }
@@ -300,6 +298,19 @@ public class LivrosContentProvider extends ContentProvider {
      */
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase bd = openHelper.getWritableDatabase();
+
+        String id = uri.getLastPathSegment();
+
+        switch(getUriMAcher().match(uri)) {
+            case URI_ID_CATEGORIA:
+                return new BdTableCategorias(bd).update(values,BdTableCategorias._ID + "=?", new String[]{id});
+
+            case URI_ID_LIVRO:
+                return new BdTableCategorias(bd).update(values,BdTableCategorias._ID + "=?", new String[]{id});
+
+            default:
+                throw new UnsupportedOperationException("Enderesso de update invalido inválidO (UPDATE): " + uri.getPath());//erro para quando o enderesso não é valido
+        }
     }
 }
