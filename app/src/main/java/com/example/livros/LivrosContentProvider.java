@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
@@ -212,7 +213,29 @@ public class LivrosContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        SQLiteDatabase bd = openHelper.getWritableDatabase();
+
+        long id;
+
+
+        switch(getUriMAcher().match(uri)) {
+            case URI_CATEGORIAS:
+                id = new BdTableCategorias(bd).insert(values);
+                break;
+
+            case URI_LIVROS:
+                id = new BdTableLivros(bd).insert(values);
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Uri inválida (INSERT): " + uri.getPath());//erro para quando o enderesso não é valido
+        }
+        if (id == -1) {
+            throw new SQLException("Não foi possivel inserir o registo" + uri.getPath());
+        }
+        //com.exemple.livros/livros/5
+
+        return  Uri.withAppendedPath(uri, String.valueOf(id));
     }
 
     /**
