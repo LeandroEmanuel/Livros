@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ListaLivrosFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private AdaptadorLivros adaptadorLivros;
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -37,18 +39,11 @@ public class ListaLivrosFragment extends Fragment implements LoaderManager.Loade
 
         Context context = getContext();
         RecyclerView recyclerViewLivros = (RecyclerView) view.findViewById(R.id.recycleViewLivros);
-        AdaptadorLivros adaptadorLivros = new AdaptadorLivros(context);
+        adaptadorLivros = new AdaptadorLivros(context);
+
         recyclerViewLivros.setAdapter(adaptadorLivros);
         recyclerViewLivros.setLayoutManager(new LinearLayoutManager(context));
-
-        // todo: este codigo é obsuleto e tem que ser substituido
-        BdLivrosOpenHelper openHelper = new BdLivrosOpenHelper(context);
-        SQLiteDatabase bdLivros = openHelper.getReadableDatabase();// abrir a bd para escrita
-        BdTableLivros tableLivros = new BdTableLivros(bdLivros);
-        Cursor cursor = tableLivros.query(BdTableLivros.TODOS_CAMPOS, null, null, null, null, null);
-        getActivity().startManagingCursor(cursor);
-        adaptadorLivros.setCursor(cursor);
-
+        adaptadorLivros.setCursor(null);
 
     }
 
@@ -72,10 +67,7 @@ public class ListaLivrosFragment extends Fragment implements LoaderManager.Loade
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        //new CursorLoader(getContext(), )
-        //todo:content provider
-
-        return null;
+        return new CursorLoader(getContext(), LivrosContentProvider.ENDERECO_LIVROS, BdTableLivros.TODOS_CAMPOS, null, null, BdTableLivros.CAMPO_TITULO );
     }
 
     /**
@@ -121,7 +113,7 @@ public class ListaLivrosFragment extends Fragment implements LoaderManager.Loade
      */
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-
+        adaptadorLivros.setCursor(data);
     }
 
     /**
