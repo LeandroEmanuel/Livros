@@ -261,7 +261,23 @@ public class LivrosContentProvider extends ContentProvider {
      */
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase bd = openHelper.getWritableDatabase();
+
+        String id = uri.getLastPathSegment();
+
+        int registosEliminados;
+
+        switch(getUriMAcher().match(uri)) {
+            case URI_ID_CATEGORIA:
+                return new BdTableCategorias(bd).delete(BdTableCategorias._ID + "=?", new String[]{id});
+
+            case URI_ID_LIVRO:
+                return new BdTableCategorias(bd).delete(BdTableCategorias._ID + "=?", new String[]{id});
+                
+            default:
+                throw new UnsupportedOperationException("Uri inválida (INSERT): " + uri.getPath());//erro para quando o enderesso não é valido
+        }
+
     }
 
     /**
