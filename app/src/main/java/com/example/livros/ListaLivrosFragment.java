@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ListaLivrosFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static final int _CURSOR_LOADER_LIVROS = 0;
     private AdaptadorLivros adaptadorLivros;
 
     @Override
@@ -44,6 +45,9 @@ public class ListaLivrosFragment extends Fragment implements LoaderManager.Loade
         recyclerViewLivros.setAdapter(adaptadorLivros);
         recyclerViewLivros.setLayoutManager(new LinearLayoutManager(context));
         adaptadorLivros.setCursor(null);
+
+        LoaderManager.getInstance(this).initLoader(_CURSOR_LOADER_LIVROS, null, this);
+
 
     }
 
