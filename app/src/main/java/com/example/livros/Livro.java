@@ -5,6 +5,16 @@ public class Livro {
     private String titulo;
     private long idCategoria = -1;
 
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    private String categoria = null;
+
     public long getId() {
         return id;
     }

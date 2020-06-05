@@ -72,7 +72,7 @@ class AdaptadorLivros extends RecyclerView.Adapter<AdaptadorLivros.ViewHolderLiv
         public void setLivro(Livro livro) {
             this.livro = livro;
             textViewTitulo.setText(livro.getTitulo());
-            textViewCategoria.setText(String.valueOf(livro.getIdCategoria()));
+            textViewCategoria.setText(String.valueOf(livro.getCategoria()));
         }
     }
 }
