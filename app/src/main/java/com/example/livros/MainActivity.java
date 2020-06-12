@@ -2,20 +2,22 @@ package com.example.livros;
 
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Fragment fragmentActual = null;
+
+    public void setFragmentActual(Fragment fragmentActual) {
+        this.fragmentActual = fragmentActual;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_lista_livros, menu);
         return true;
     }
 
@@ -50,6 +52,15 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }else if(id == R.id.action_inserir_livro){
+            ((ListaLivrosFragment)fragmentActual).novoLivro();
+            return true;
+        }else if(id == R.id.action_alterar_livro){
+            ((ListaLivrosFragment)fragmentActual).alteraLivro();
+            return true;
+        }else if(id == R.id.action_eliminar_livro){
+            //todo: eliminar livro
             return true;
         }
 

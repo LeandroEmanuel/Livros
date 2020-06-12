@@ -5,32 +5,32 @@ import android.database.Cursor;
 
 public class Convert {
     public static ContentValues categoriaToContentValues(Categoria categoria){
-        ContentValues valores = new ContentValues();
-        valores.put(BdTableCategorias.CAMPO_DESCRICAO,categoria.getDescricao());
-        return valores;
+        ContentValues values = new ContentValues();
+        values.put(BdTableCategorias.CAMPO_DESCRICAO,categoria.getDescricao());
+        return values;
     }
 
-    public static Categoria contentValuesToCategoria(ContentValues valores){
+    public static Categoria contentValuesToCategoria(ContentValues values){
         Categoria categoria = new Categoria();
 
-        categoria.setId( valores.getAsLong(BdTableCategorias._ID));
-        categoria.setDescricao(valores.getAsString(BdTableCategorias.CAMPO_DESCRICAO));
+        categoria.setId( values.getAsLong(BdTableCategorias._ID));
+        categoria.setDescricao(values.getAsString(BdTableCategorias.CAMPO_DESCRICAO));
 
         return categoria;
     }
     public static ContentValues livroToContentValues(Livro livro){
-        ContentValues valores = new ContentValues();
-        valores.put(BdTableLivros.CAMPO_TITULO, livro.getTitulo());
-        valores.put(BdTableLivros.CAMPO_ID_CATEGORIA, livro.getIdCategoria());
-        return valores;
+        ContentValues values = new ContentValues();
+        values.put(BdTableLivros.CAMPO_TITULO, livro.getTitulo());
+        values.put(BdTableLivros.CAMPO_ID_CATEGORIA, livro.getIdCategoria());
+        return values;
     }
-    public static Livro contentValuesToLivro(ContentValues valores){
+    public static Livro contentValuesToLivro(ContentValues values){
         Livro livro = new Livro();
 
-        livro.setId( valores.getAsLong(BdTableLivros._ID));
-        livro.setTitulo(valores.getAsString(BdTableLivros.CAMPO_TITULO));
-        livro.setIdCategoria(valores.getAsLong(BdTableLivros.CAMPO_ID_CATEGORIA));
-        livro.setCategoria(valores.getAsString(BdTableLivros.CAMPO_CATEGORIA));
+        livro.setId( values.getAsLong(BdTableLivros._ID));
+        livro.setTitulo(values.getAsString(BdTableLivros.CAMPO_TITULO));
+        livro.setIdCategoria(values.getAsLong(BdTableLivros.CAMPO_ID_CATEGORIA));
+        livro.setCategoria(values.getAsString(BdTableLivros.CAMPO_CATEGORIA));
 
         return livro;
     }

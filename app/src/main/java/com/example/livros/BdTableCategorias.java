@@ -11,9 +11,9 @@ public class BdTableCategorias implements BaseColumns {
 
 
     public static final String CAMPO_ID_COMPLETO = NOME_DA_TABELA + "." + _ID;
-    public static final String CAMPO_TITULO_COMPLETO = NOME_DA_TABELA + "." + CAMPO_DESCRICAO;
+    public static final String CAMPO_DESCRICAO_COMPLETO = NOME_DA_TABELA + "." + CAMPO_DESCRICAO;
 
-    public static final String[] TODOS_CAMPOS = new String[]{_ID,CAMPO_DESCRICAO};
+    public static final String[] TODOS_CAMPOS = new String[]{CAMPO_ID_COMPLETO,CAMPO_DESCRICAO_COMPLETO};
 
     private SQLiteDatabase db;
     public BdTableCategorias(SQLiteDatabase db) {
@@ -26,8 +26,6 @@ public class BdTableCategorias implements BaseColumns {
                 CAMPO_DESCRICAO + " TEXT NOT NULL" +
                 ")");
     }
-
-
 
     public long insert(ContentValues values) {
         return db.insert(NOME_DA_TABELA,null,values);

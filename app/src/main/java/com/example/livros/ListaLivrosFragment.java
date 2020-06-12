@@ -39,6 +39,11 @@ public class ListaLivrosFragment extends Fragment implements LoaderManager.Loade
         super.onViewCreated(view, savedInstanceState);
 
         Context context = getContext();
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.setFragmentActual(this);
+
+
         RecyclerView recyclerViewLivros = (RecyclerView) view.findViewById(R.id.recycleViewLivros);
         adaptadorLivros = new AdaptadorLivros(context);
 
@@ -47,14 +52,14 @@ public class ListaLivrosFragment extends Fragment implements LoaderManager.Loade
         adaptadorLivros.setCursor(null);
 
         LoaderManager.getInstance(this).initLoader(_CURSOR_LOADER_LIVROS, null, this);
-
-
     }
 
-    private void alteraLivro() {
+    public void alteraLivro() {
+        NavController navController = NavHostFragment.findNavController(ListaLivrosFragment.this);
+        navController.navigate(R.id.action_alterar_livro);
     }
 
-    private void novoLivro() {
+    public void novoLivro() {
         NavController navController = NavHostFragment.findNavController(ListaLivrosFragment.this);
         navController.navigate(R.id.action_lista_livros_to_adicionar_livro);
     }

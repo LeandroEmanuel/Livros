@@ -41,8 +41,8 @@ public class BdTableLivros implements BaseColumns {
         return db.insert(NOME_TABELA,null,values);
     }
     public Cursor query(String[] columns, String selection,
-                        String[] selectionArgs, String groupBy, String having,
-                        String orderBy){
+            String[] selectionArgs, String groupBy, String having,
+            String orderBy){
 
         if(!Arrays.asList(columns).contains(CAMPO_CATEGORIA_COMPLETO)){
             return db.query(NOME_TABELA, columns, selection, selectionArgs, groupBy, having, orderBy);

@@ -201,19 +201,6 @@ public class LivrosContentProvider extends ContentProvider {
         }
     }
 
-    /**
-     * Implement this to handle requests to insert a new row.
-     * As a courtesy, call {@link ContentResolver#notifyChange(Uri, ContentObserver) notifyChange()}
-     * after inserting.
-     * This method can be called from multiple threads, as described in
-     * <a href="{@docRoot}guide/topics/fundamentals/processes-and-threads.html#Threads">Processes
-     * and Threads</a>.
-     *
-     * @param uri    The content:// URI of the insertion request. This must not be {@code null}.
-     * @param values A set of column_name/value pairs to add to the database.
-     *               This must not be {@code null}.
-     * @return The URI for the newly inserted item.
-     */
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
