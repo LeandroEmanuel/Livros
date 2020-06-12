@@ -42,6 +42,7 @@ public class ListaLivrosFragment extends Fragment implements LoaderManager.Loade
 
         MainActivity activity = (MainActivity) getActivity();
         activity.setFragmentActual(this);
+        activity.setMenuAtual(R.menu.menu_lista_livros);
 
 
         RecyclerView recyclerViewLivros = (RecyclerView) view.findViewById(R.id.recycleViewLivros);
@@ -137,5 +138,8 @@ public class ListaLivrosFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
+    }
+
+    public void gauardar() {
     }
 }

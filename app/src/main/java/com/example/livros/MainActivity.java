@@ -15,8 +15,18 @@ public class MainActivity extends AppCompatActivity {
 
     private Fragment fragmentActual = null;
 
+    private int menuAtual = R.menu.menu_lista_livros;
+
     public void setFragmentActual(Fragment fragmentActual) {
         this.fragmentActual = fragmentActual;
+    }
+
+    public void setMenuAtual(int menuAtual) {
+        if(menuAtual != this.menuAtual){
+            this.menuAtual = menuAtual;
+            invalidateOptionsMenu();
+        }
+        this.menuAtual = menuAtual;
     }
 
     @Override
@@ -35,11 +45,14 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment.findNavController(fragment)
                 .navigate(R.id.action_lista_livros_to_adicionar_livro);
     }
+    private void eliminaLivro() {
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_lista_livros, menu);
+        getMenuInflater().inflate(menuAtual, menu);
         return true;
     }
 
@@ -53,17 +66,47 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }else if(id == R.id.action_inserir_livro){
-            ((ListaLivrosFragment)fragmentActual).novoLivro();
+        }else if(menuAtual == R.menu.menu_lista_livros){
+            processaOpcoesMenuListaLivros(id);
             return true;
-        }else if(id == R.id.action_alterar_livro){
-            ((ListaLivrosFragment)fragmentActual).alteraLivro();
-            return true;
-        }else if(id == R.id.action_eliminar_livro){
-            //todo: eliminar livro
+
+        }else if(menuAtual == R.menu.menu_inserir_livro){
+            processaOpcoesMenuInserirLivro(id);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private boolean processaOpcoesMenuInserirLivro(int id) {
+
+        ListaLivrosFragment adicionarLivroFragment = (ListaLivrosFragment) this.fragmentActual;
+        if(id == R.id.action_guardar_livro){
+            adicionarLivroFragment.gauardar();
+            return true;
+        }else if(id == R.id.action_cancelar_livro){
+            adicionarLivroFragment.cancelar();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean processaOpcoesMenuListaLivros(int id) {
+        ListaLivrosFragment listaLivrosFragment = (ListaLivrosFragment) this.fragmentActual;
+        if(id == R.id.action_inserir_livro){
+            listaLivrosFragment.novoLivro();
+            return true;
+        }else if(id == R.id.action_alterar_livro){
+            listaLivrosFragment.alteraLivro();
+            return true;
+        }else if(id == R.id.action_eliminar_livro){
+            eliminaLivro();
+            return true;
+        }
+
+        return false;
+    }
+
+
+
 }
