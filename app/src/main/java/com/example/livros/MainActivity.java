@@ -67,12 +67,10 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }else if(menuAtual == R.menu.menu_lista_livros){
-            processaOpcoesMenuListaLivros(id);
-            return true;
+            if (processaOpcoesMenuListaLivros(id)) return true;
 
         }else if(menuAtual == R.menu.menu_inserir_livro){
-            processaOpcoesMenuInserirLivro(id);
-            return true;
+            if(processaOpcoesMenuInserirLivro(id)) return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean processaOpcoesMenuInserirLivro(int id) {
 
-        ListaLivrosFragment adicionarLivroFragment = (ListaLivrosFragment) this.fragmentActual;
+         AdicionarLivroFragment adicionarLivroFragment = (AdicionarLivroFragment) this.fragmentActual;
         if(id == R.id.action_guardar_livro){
             adicionarLivroFragment.gauardar();
             return true;
